@@ -153,3 +153,106 @@ def display_sorted_by_average(): # Виведення студентів за с
         print(f"{i}. {name} — Середній бал: {avg:.2f}")
 
 #Лозовська Роксана фільтрації за курсом/групою
+
+def filter_by_course(course): #Фільтрація за курсом
+    print(f"\nСТУДЕНТИ КУРСУ {course}:")
+    found = False
+    #Виводимо всіх студентів, які навчаються на заданому курсі
+    for name, info in students.items():
+        if info["Курс"] == course:
+            found = True
+            print(f" - {name} ({info['Група']})")
+    if not found:
+        print("Студентів не знайдено.")
+
+def filter_by_group(group): #Фільтрація за групою
+    print(f"\nСТУДЕНТИ ГРУПИ {group}:")
+    found = False
+    #Виводимо всіх студентів із заданої групи
+    for name, info in students.items():
+        if info["Група"] == group:
+            found = True
+            print(f" - {name} (курс {info['Курс']})")
+    if not found:
+        print("Студентів не знайдено.")
+
+#Головна функція(Ніколаєнко Дмитро)
+def main_menu():
+    #Безкінечний цикл роботи меню поки користувач не обере вихід
+    while True:
+        print("\n--- ГОЛОВНЕ МЕНЮ ---")
+        print("1. Переглянути всіх студентів")
+        print("2. Додати нового студента")
+        print("3. Видалити студента")
+        print("4. Знайти студента")
+        print("5. Редагувати дані студента")
+        print("6. Сортувати за середнім балом")
+        print("7. Фільтрувати за курсом")
+        print("8. Фільтрувати за групою")
+        print("0. Вихід")
+
+        choice = input("Ваш вибір: ").strip()
+
+        if choice == "1":
+            display_all_students() #Виклик функції перегляду всіх студентів
+
+        elif choice == "2":
+            #Додавання нового студента
+            name = input("Введіть ПІБ: ")
+            group = input("Введіть групу: ")
+            try:
+                course = int(input("Введіть курс: "))
+            except ValueError:
+                print("Курс має бути числом!")
+                continue
+            subjects = {} # Словник для оцінок
+            for subj in SUBJECTS:
+                try:
+                    grade = int(input(f"{subj}: "))
+                    if 0 <= grade <= 100:
+                        subjects[subj] = grade
+                    else:
+                        print("Оцінка поза межами 0–100! Збережено 0.")
+                        subjects[subj] = 0
+                except ValueError:
+                    print("Некоректне значення, збережено 0.")
+                    subjects[subj] = 0
+            add_student(name, group, course, subjects)  # Виклик функції додавання
+
+        elif choice == "3": #Видалення студента за ПІБ
+            name = input("Введіть ПІБ студента: ")
+            delete_student(name)
+
+        elif choice == "4": #Пошук студента за ПІБ
+            name = input("Введіть ПІБ студента: ")
+            find_student(name)
+
+        elif choice == "5": #Редагування даних студента
+            name = input("Введіть ПІБ студента: ")
+            field = input("Введіть поле (Група/Курс/назва предмету): ")
+            new_value = input("Введіть нове значення: ")
+            edit_student_info(name, field, new_value)
+
+        elif choice == "6": #Сортування за середнім балом
+            display_sorted_by_average()
+
+        elif choice == "7": #Фільтрація студентів за курсом
+            try:
+                course = int(input("Введіть курс: "))
+                filter_by_course(course)
+            except ValueError:
+                print("Курс має бути числом!")
+
+        elif choice == "8": #Фільтрація студентів за групою
+            group = input("Введіть групу: ")
+            filter_by_group(group)
+
+        elif choice == "0": #Завершення програми
+            print("Роботу завершено.")
+            break
+        else:
+            print("Невірний вибір!") #Перевірка на некоректне введення
+
+#Запуск
+if __name__ == "__main__":
+    main_menu()
