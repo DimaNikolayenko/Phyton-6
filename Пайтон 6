@@ -153,3 +153,26 @@ def display_sorted_by_average(): # Виведення студентів за с
         print(f"{i}. {name} — Середній бал: {avg:.2f}")
 
 #Лозовська Роксана фільтрації за курсом/групою
+
+def filter_by_course(course): #Фільтрація за курсом
+    print(f"\nСТУДЕНТИ КУРСУ {course}:")
+    found = False
+    #Виводимо всіх студентів, які навчаються на заданому курсі
+    for name, info in students.items():
+        if info["Курс"] == course:
+            found = True
+            print(f" - {name} ({info['Група']})")
+    if not found:
+        print("Студентів не знайдено.")
+
+def filter_by_group(group): #Фільтрація за групою
+    print(f"\nСТУДЕНТИ ГРУПИ {group}:")
+    found = False
+    #Виводимо всіх студентів із заданої групи
+    for name, info in students.items():
+        if info["Група"] == group:
+            found = True
+            print(f" - {name} (курс {info['Курс']})")
+    if not found:
+        print("Студентів не знайдено.")
+
