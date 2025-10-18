@@ -65,3 +65,23 @@ def add_student(full_name, group, course, subjects_grades): #Додавання 
     print(f"Студент {full_name} успішно доданий!")
 
 #Пушкар Юлія Видалення студента і виведення всього словника
+
+def delete_student(full_name): #Видалення студента за ПІБ
+    if full_name in students: #Якщо ПІБ є в словнику — видаляємо запис
+        del students[full_name]
+        print(f"Студент {full_name} видалений!")
+    else:
+        print(f"Студента {full_name} не знайдено.")
+
+def display_all_students(): #Виведення всього словника
+    print("\nСПИСОК ВСІХ СТУДЕНТІВ")
+    #Проходимо по кожному студенту та виводимо його дані
+    for i, (name, info) in enumerate(students.items(), 1):
+        print(f"\n{i}. {name}")
+        print(f"   Група: {info['Група']}")
+        print(f"   Курс: {info['Курс']}")
+        for subj, grade in info['Предмети та оцінки за семестр'].items():
+            print(f"     {subj}: {grade}")
+
+#Ганжара Богдан функція пошуку студента за ПІБ, функція редагування інформації
+
