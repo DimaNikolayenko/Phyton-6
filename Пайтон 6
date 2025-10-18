@@ -65,3 +65,76 @@ def add_student(full_name, group, course, subjects_grades): #Додавання 
     print(f"Студент {full_name} успішно доданий!")
 
 #Пушкар Юлія Видалення студента і виведення всього словника
+
+def find_student(full_name):
+    #Пошук студента за ПІБ
+    if full_name in students:
+        info = students[full_name]
+        print(f"\nЗнайдено студента: {full_name}")
+        print(f"Група: {info['Група']}, Курс: {info['Курс']}")
+        #Виводимо усі оцінки
+        for s, g in info['Предмети та оцінки за семестр'].items():
+            print(f"   {s}: {g}")
+    else:
+        print("Студента не знайдено.")
+
+def edit_student_info(full_name, field, new_value): #Функція редагування даних певного студента
+    #Якщо студента немає — виходимо
+    if full_name not in students:
+        print("Студента не знайдено.")
+        return
+
+    student = students[full_name]
+    #Якщо змінюється поле "Група" або "Курс
+    if field == "Група":
+        student["Група"] = new_value
+        print("Групу змінено успішно.")
+
+    elif field == "Курс":
+        try:
+            new_course = int(new_value)
+            if new_course < 1:
+                print("Курс має бути більше 0!")
+                return
+            student["Курс"] = new_course
+            print("Курс змінено успішно.")
+        except ValueError:
+            print("Курс повинен бути числом!")
+    #Якщо змінюється оцінка з предмету
+    elif field in student["Предмети та оцінки за семестр"]:
+        #Редагування оцінки з певного предмету
+        try:
+            grade = int(new_value)
+            if 0 <= grade <= 100:
+                student["Предмети та оцінки за семестр"][field] = grade
+                print("Оцінку змінено успішно.")
+            else:
+                print("Оцінка повинна бути в межах 0–100!")
+        except ValueError:
+            print("Оцінка повинна бути числом!")
+
+    else:
+        print("Поле не знайдено.")
+
+#Писана Оля функція сортування студентів за середнім балом
+
+#Словник, який використовує Богдан, побудовано оптимально
+#Завдяки вкладеній структурі можна швидко знайти дані студента або оновити оцінки
+
+def calculate_average(grades): #Функція обчислення середнього бала
+    return sum(grades.values()) / len(grades) if grades else 0 #Якщо немає оцінок — 0
+
+def display_sorted_by_average(): # Виведення студентів за середнім балом
+    print("\nСТУДЕНТИ ЗА СЕРЕДНІМ БАЛОМ:")
+    #Сортування студентів за середнім балом
+    sorted_students = sorted(
+        students.items(),
+        key=lambda x: calculate_average(x[1]["Предмети та оцінки за семестр"]),
+        reverse=True
+    )
+    #Виводимо результат сортування
+    for i, (name, info) in enumerate(sorted_students, 1):
+        avg = calculate_average(info["Предмети та оцінки за семестр"])
+        print(f"{i}. {name} — Середній бал: {avg:.2f}")
+
+#Лозовська Роксана фільтрації за курсом/групою
