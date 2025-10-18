@@ -136,3 +136,20 @@ def edit_student_info(full_name, field, new_value): #Функція редагу
         print("Поле не знайдено.")
 
 #Писана Оля функція сортування студентів за середнім балом
+def calculate_average(grades): #Функція обчислення середнього бала
+    return sum(grades.values()) / len(grades) if grades else 0 #Якщо немає оцінок — 0
+
+def display_sorted_by_average(): # Виведення студентів за середнім балом
+    print("\nСТУДЕНТИ ЗА СЕРЕДНІМ БАЛОМ:")
+    #Сортування студентів за середнім балом
+    sorted_students = sorted(
+        students.items(),
+        key=lambda x: calculate_average(x[1]["Предмети та оцінки за семестр"]),
+        reverse=True
+    )
+    #Виводимо результат сортування
+    for i, (name, info) in enumerate(sorted_students, 1):
+        avg = calculate_average(info["Предмети та оцінки за семестр"])
+        print(f"{i}. {name} — Середній бал: {avg:.2f}")
+
+#Лозовська Роксана фільтрації за курсом/групою
